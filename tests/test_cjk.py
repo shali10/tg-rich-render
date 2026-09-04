@@ -1,7 +1,12 @@
 import unittest
-from tg_rich_render.cjk import get_display_width, pad_cjk
+from tg_rich_render.cjk import get_display_width, pad_cjk, strip_ansi
 
 class TestCJK(unittest.TestCase):
+    def test_strip_ansi(self):
+        colored = "\x1b[31mRed Text\x1b[0m"
+        self.assertEqual(strip_ansi(colored), "Red Text")
+        self.assertEqual(get_display_width(colored), 8)
+
     def test_get_display_width(self):
         self.assertEqual(get_display_width("hello"), 5)
         self.assertEqual(get_display_width("你好"), 4)

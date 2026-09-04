@@ -2,10 +2,18 @@
 
 Ensures perfect column alignment for Chinese, Japanese, Korean,
 full-width punctuation, and emoji in Telegram monospace contexts.
+Also strips ANSI escapes so styled strings calculate accurately.
 """
 
+import re
 import unicodedata
 from typing import Literal
+
+ANSI_RE = re.compile(r'\x1b\[[0-9;]*[a-zA-Z]')
+
+def strip_ansi(text: str) -> str:
+    """Remove ANSI escape sequences from string."""
+    return ANSI_RE.sub('', text)
 
 def get_char_width(ch: str) -> int:
     """Return the display column width of a single unicode character."""
@@ -23,7 +31,8 @@ def get_char_width(ch: str) -> int:
 
 def get_display_width(text: str) -> int:
     """Calculate the total display width of a string in monospace columns."""
-    return sum(get_char_width(ch) for ch in text)
+    clean_text = strip_ansi(text)
+    return sum(get_char_width(ch) for ch in clean_text)
 
 def pad_cjk(text: str, width: int, align: Literal['left', 'right', 'center'] = 'left') -> str:
     """Pad a string containing CJK characters to the specified display width."""
