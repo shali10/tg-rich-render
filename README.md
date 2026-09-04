@@ -95,9 +95,26 @@ print(message)
 巡检完成，无异常节点。
 ```
 
+### 2. 直接渲染字典/数据库记录 (`from_records`)
+
+无需手拼 Markdown 字符串，直接将 SQL/API 字典数组转为格式化表格：
+
+```python
+from tg_rich_render.table import Table
+
+data = [
+    {"服务": "API 网关", "状态": "运行中", "延迟": "12ms"},
+    {"服务": "MySQL 数据库", "状态": "正常", "延迟": "2ms"},
+    {"服务": "Redis 缓存", "状态": "正常", "延迟": "1ms"},
+]
+
+table = Table.from_records(data)
+print(table.render_rounded())
+```
+
 ---
 
-### 2. 结合 aiogram 3
+### 3. 结合 aiogram 3
 
 ```python
 from aiogram import Bot
@@ -116,7 +133,7 @@ await send_smart_message(
 
 ---
 
-### 3. 结合 python-telegram-bot
+### 4. 结合 python-telegram-bot
 
 ```python
 from telegram import Bot
