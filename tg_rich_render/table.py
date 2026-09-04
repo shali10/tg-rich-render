@@ -74,6 +74,33 @@ class Table:
 
         return cls(headers=raw_header, rows=rows, alignments=alignments)
 
+    @classmethod
+    def from_records(
+        cls,
+        records: List[Dict[str, Any]],
+        headers: Optional[List[str]] = None,
+        alignments: Optional[List[Alignment]] = None
+    ) -> Optional['Table']:
+        """Create a Table instance directly from a list of dictionaries (records).
+
+        Args:
+            records: List of dictionaries representing table rows.
+            headers: Optional explicit column headers / ordering. If None, uses keys of first record.
+            alignments: Optional column alignments ('left', 'center', 'right').
+        """
+        if not records:
+            return None
+
+        if headers is None:
+            headers = list(records[0].keys())
+
+        rows = []
+        for rec in records:
+            row = [str(rec.get(h, '')) for h in headers]
+            rows.append(row)
+
+        return cls(headers=headers, rows=rows, alignments=alignments)
+
     def render_rounded(self) -> str:
         """Render using modern Unicode rounded box characters."""
         widths = self.col_widths
