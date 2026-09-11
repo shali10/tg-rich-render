@@ -9,7 +9,7 @@ from tg_rich_render.table import Table
 from tg_rich_render.parser import render_telegram, extract_tables_and_text, TableStyle
 from tg_rich_render.adapter import smart_format_payload, send_smart_message
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 __all__ = [
     "Table",
     "TableStyle",
